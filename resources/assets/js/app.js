@@ -19,3 +19,5 @@ Vue = require('../../../bower_components/vue/dist/vue.min');
 require('../../../resources/assets/js/myvue');
 
 require('../../../resources/assets/js/algolia');
+
+

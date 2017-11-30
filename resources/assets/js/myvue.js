@@ -165,11 +165,10 @@ Vue.component('posts', {
 });
 
 Vue.component('update-post', {
-    props: ['post'],
+    props: ['post','user'],
     data(){
         return {
             isVisible: true,
-            postDetails: this.post,
         }
     },
     methods: {
@@ -182,6 +181,28 @@ Vue.component('update-post', {
     template: `
 
         <div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">Panel heading without title</div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Post</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{ this.user.name }}</td>
+                        <td>{{this.post.post_content}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
             <button type="button" class="btn btn-primary" @click="show()">Toggle Edit</button>
             <transition name="fade">
                 <form v-show="!isVisible" method="submit" action="">
