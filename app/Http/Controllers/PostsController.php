@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostsResource;
 use App\Http\Resources\PostsResourceCollection;
 
@@ -38,6 +39,10 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'post_content' => 'required',
+            'country' => 'required'
+        ]);
         \Auth::user()->posts()->create($request->all());
 
 //        return response(new PostsResource($post), 201);
@@ -74,7 +79,7 @@ class PostsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $post->update($request->all());
         return response(new PostsResource($post), 200);

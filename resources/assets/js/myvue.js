@@ -69,7 +69,7 @@ Vue.component('axios', {
                 grant_type: 'password',
                 // client_id: '3',
                 // client_secret: '8f9jBpui5E3TXkBl4SU83cti2FT7SawAsDaLtEET',
-                client_id: 2,
+                client_id: 2, //default laravel passport password client
                 client_secret: 'umf0xMJUgUFIXWulwQe2sIeaBoqhuXIhS6vJXHXb',
                 username: document.getElementById('username').value,
                 password: document.getElementById('password').value,
@@ -164,69 +164,11 @@ Vue.component('posts', {
         `
 });
 
-Vue.component('update-post', {
-    props: ['post','user'],
-    data(){
-        return {
-            isVisible: true,
-        }
-    },
-    methods: {
-        show(){
-            this.isVisible = !this.isVisible;
-           console.log(this.postDetails)
+Vue.component('update-post', require('./components/posts/UpdatePost.vue'));
 
-        }
-    },
-    template: `
 
-        <div>
-        
-        <div class="panel panel-default">
-            <div class="panel-heading">Panel heading without title</div>
-            <div class="panel-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Post</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>{{ this.user.name }}</td>
-                        <td>{{this.post.post_content}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-            <button type="button" class="btn btn-primary" @click="show()">Toggle Edit</button>
-            <transition name="fade">
-                <form v-show="!isVisible" method="submit" action="">
-                    <div class="panel panel-default">
-  <div class="panel-heading">Update form</div>
-  <div class="panel-body">
-   <div class="form-group">
-   <label for="post_content">Your post</label>
-   <textarea class="form-control" name="post_content" id="post_content" cols="30" rows="10"></textarea>
-   
-</div>
-   <div class="form-group">
-   <button class="btn btn-success" type="submit">Submit</button>
-</div>
-  </div>
-  
-</div>
-                </form>
-            </transition>
+Vue.component('create-post', require('./components/posts/CreatePost.vue'));
 
-            
-         </div>
-   `
-});
 const app = new Vue({
     el: '#app',
 });

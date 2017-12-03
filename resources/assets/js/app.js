@@ -7,7 +7,7 @@
 require('./bootstrap');
 
 // window.Vue = require('vue');
-Vue = require('../../../bower_components/vue/dist/vue.min');
+// Vue = require('../../../bower_components/vue/dist/vue.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -13,7 +13,7 @@ class PostSeeder extends Seeder
     {
         $faker = Faker\Factory::create();
 
-        $limit = 1000;
+        $limit = 100;
 
         for ($i = 0; $i < $limit; $i++) {
             \App\Post::create([

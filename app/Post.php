@@ -37,7 +37,7 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'post_content','type'
+        'post_content', 'country'
     ];
 
     /**
