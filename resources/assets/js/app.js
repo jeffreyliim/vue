@@ -8,7 +8,6 @@ require('./bootstrap');
 
 // window.Vue = require('vue');
 // Vue = require('../../../bower_components/vue/dist/vue.min');
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -20,4 +19,5 @@ require('../../../resources/assets/js/myvue');
 
 require('../../../resources/assets/js/algolia');
 
+require('../../../node_modules/selectize/dist/js/selectize');
 

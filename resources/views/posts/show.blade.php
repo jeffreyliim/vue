@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('css')
-
     <style>
         /* Algolia's searhc UI */
         @import 'https://fonts.googleapis.com/css?family=Montserrat:400,700';
@@ -133,7 +132,7 @@
                         </div>
 
                     </div>
-
+                    <input id="input-tags" name="tags" type="text">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
 
@@ -143,3 +142,20 @@
     </div>
 @endsection
 
+@section('scripts')
+    <script>
+        $('#input-tags').selectize({
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            },
+            maxItems: 3
+        });
+
+    </script>
+
+@endsection

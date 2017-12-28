@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <axios></axios>
-                <posts></posts>
+                <issues></issues>
             </div>
         </div>
     </div>

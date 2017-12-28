@@ -18,39 +18,6 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
-Vue.component('example', require('./components/Example.vue'));
-
-/**
- *  <counter></counter>
- */
-Vue.component('counter', {
-    data: function () {
-        return {
-            counter: 0
-        }
-    },
-    methods: {
-        incrementCounter: function () {
-            this.counter += 1;
-            this.$emit('increment')
-        }
-    },
-    template: `
-                                           <button @click="incrementCounter()">@{{ counter }}</button>
-                                               `
-});
-
-/**
- * <todo-item body="aasd"></todo-item>
- */
-
-Vue.component('todo-item', {
-    props: ['body'],
-    template: `
-                                         <li>@{{ body }} </li>
-                                    `
-});
-
 /**
  * oauth authentication for client
  * <axios></axios>
@@ -59,102 +26,107 @@ Vue.component('todo-item', {
 Vue.component('axios', {
     data(){
         return {
-            user_access_token: null
+            userAccessToken: '',
+            usernameTB: '',
+            passwordTB: '',
+            securityScheme: 'http://',
+            baseURL: 'localhost'
         }
     },
     methods: {
+        getUser(){
+            axios.get(this.securityScheme + this.baseURL + '/api/user', this.userAccessToken).then(response => {
+                // If request is good...
+                console.log(response.data)
+            })
+                .catch((error) => {
+                    console.log('error' + error);
+                });
+        },
         authenticate(){
             //using the laravelapi on homestead
             const data = {
                 grant_type: 'password',
-                // client_id: '3',
-                // client_secret: '8f9jBpui5E3TXkBl4SU83cti2FT7SawAsDaLtEET',
-                client_id: 2, //default laravel passport password client
-                client_secret: 'umf0xMJUgUFIXWulwQe2sIeaBoqhuXIhS6vJXHXb',
-                username: document.getElementById('username').value,
-                password: document.getElementById('password').value,
+                client_id: 3, //default laravel passport password client
+                client_secret: 'MbZuMKglyVtxdHFO5VgXJdb7ozqoXxF4rLbQeRHW',
+                username: this.usernameTB,
+                password: this.passwordTB,
             };
-
             /**
              * create user access token
              */
-            let securityScheme = 'http://';
-            let baseURL = 'localhost';
-            axios.post(securityScheme + baseURL + '/api/oauth/token', data)
+            axios.post(this.securityScheme + this.baseURL + '/api/oauth/token', data)
                 .then(response => {
                     let USER_TOKEN = response.data.access_token;
                     let TOKEN_TYPE = response.data.token_type; //bearer
-
-                    user_token = {
+                    this.userAccessToken = {
                         headers: {
 
                             authorization: TOKEN_TYPE + ' ' + USER_TOKEN,
 
                         }
                     };
-                    this.user_access_token = user_token;
                     /**
                      * get user with access token
                      */
-                }).catch((error) => {
-                console.log('error ' + error);
+                    this.getUser();
+
+                }).catch(error => {
+                console.log(error);
             });
 
-            console.log(this.user_access_token);
+        },
 
-            axios.get(securityScheme + baseURL + '/api/issues', this.user_access_token).then(response => {
-                // If request is good...
-                console.log(response.data);
-            })
-                .catch((error) => {
-                    console.log('error' + error);
-                });
-
-        }
     },
 
     template: `
 <div>
-<input type="text" id="username" placeholder="username">
-<input type="text" id="password" placeholder="password">
-<button @click="authenticate()">Login</button>
+<form method="post" @submit.prevent="authenticate()">
+<input type="text" v-model="usernameTB" placeholder="username">
+<input type="text" v-model="passwordTB" placeholder="password">
+<button type="submit">Login</button>
+</form>
 </div>
                            `
 });
 
-Vue.component('posts', {
+Vue.component('issues', {
     data(){
         return {
-            postSubmitted: false,
-            postNotSubmitted: false
+            issueSubmitted: false,
+            issueNotSubmitted: false,
+            inputIssue: '',
+            securityScheme: 'http://',
+            baseURL: 'laravelapi.dev'
         }
     },
     methods: {
-        submitPost(){
-            submitPostData = {
-                post_content: document.getElementById('inputPost').value
+        submitIssues(){
+            submitIssueData = {
+                issue: this.inputIssue,
+                user_id: 1
             };
-            axios.post('/api/posts', submitPostData)
+            axios.post(this.securityScheme + this.baseURL + '/api/issues', submitIssueData)
                 .then(response => {
-                    this.postSubmitted = true;
-                    this.postNotSubmitted = false;
-                    console.log(response.data)
+                    this.issueSubmitted = true;
+                    this.issueNotSubmitted = false;
+                    console.log(response)
                 })
                 .catch(error => {
-                    this.postNotSubmitted = true;
-                    this.postSubmitted = false;
+                    this.issueNotSubmitted = true;
+                    this.issueSubmitted = false;
                     console.log(error)
-                })
+                });
         }
     },
     template: `
             <div> <!--- always start with div -->
-                <input id="inputPost" type="text">
-                <button @click="submitPost()">Post</button>
-                <div v-show="postSubmitted" class="alert alert-success" role="alert">
+                <input v-model="inputIssue" type="text">
+                <button @click="submitIssues()">Post</button>
+                <div v-show="issueSubmitted" class="alert alert-success" role="alert">
                      Post is submitted
                 </div>
-                <div v-show="postNotSubmitted" class="alert alert-danger" role="alert">
+                <div v-show="issueNotSubmitted" class="alert alert-danger" role="alert">
                      Something went wrong
                 </div>
             </div>
@@ -163,6 +135,7 @@ Vue.component('posts', {
             
         `
 });
+
 
 Vue.component('update-post', require('./components/posts/UpdatePost.vue'));
 
