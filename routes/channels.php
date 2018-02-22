@@ -14,3 +14,7 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+//Broadcast::channel('users-was-changed.{userID}', function($user, $userID){
+//    return (int) $user->id === \Auth::user($userID);
+//});

@@ -8,6 +8,8 @@ use App\Http\Resources\PostsResourceCollection;
 
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Storage;
 
 class PostsController extends Controller
 {
@@ -18,7 +20,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        return response(new PostsResourceCollection(\Auth::user()->posts()->paginate()), 200);
+        return new PostsResourceCollection(Post::paginate(), Response::HTTP_OK);
     }
 
     /**
@@ -28,7 +30,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.show');
+        return view('posts.create');
     }
 
     /**
@@ -57,8 +59,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = \Auth::user()->posts()->findOrFail($id);
-        return view('posts.update', compact('post'));
+        return \Auth::user()->posts()->findOrFail($id)->load('user');
     }
 
     /**
@@ -69,7 +70,8 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = \Auth::user()->posts()->findOrFail($id)->load('user');
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -82,7 +84,7 @@ class PostsController extends Controller
     public function update(PostRequest $request, Post $post)
     {
         $post->update($request->all());
-        return response(new PostsResource($post), 200);
+        return response(new PostsResource($post->load('user')), 200);
     }
 
     /**
@@ -97,8 +99,17 @@ class PostsController extends Controller
         return response(null, 204);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function search(Request $request)
     {
         return Post::search($request->get('search'))->get();
+    }
+
+    public function fileUpload(Request $request)
+    {
+        return Storage::disk('local')->put('pictures', $request->file('file'));
     }
 }

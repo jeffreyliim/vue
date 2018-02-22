@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { isIE9, isAndroid } from 'core/util/env'
+import { isIE9, isIE, isAndroid } from 'core/util/env'
 
 describe('Directive v-model text', () => {
   it('should update value both ways', done => {
@@ -336,7 +336,7 @@ describe('Directive v-model text', () => {
     })
 
     // #4392
-    it('should not update value with modifiers when in focus if posts-conversion values are the same', done => {
+    it('should not update value with modifiers when in focus if post-conversion values are the same', done => {
       const vm = new Vue({
         data: {
           a: 1,
@@ -410,6 +410,23 @@ describe('Directive v-model text', () => {
       }).then(() => {
         expect(vm.$el.value).toBe('')
       }).then(done)
+    })
+  }
+
+  // #7138
+  if (isIE && !isIE9) {
+    it('should not fire input on initial render of textarea with placeholder in IE10/11', done => {
+      const el = document.createElement('div')
+      document.body.appendChild(el)
+      const vm = new Vue({
+        el,
+        data: { foo: null },
+        template: `<textarea v-model="foo" placeholder="bar"></textarea>`
+      })
+      setTimeout(() => {
+        expect(vm.foo).toBe(null)
+        done()
+      }, 17)
     })
   }
 })

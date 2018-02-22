@@ -24,6 +24,7 @@ use Laravel\Scout\Searchable;
  * @property string $country
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCountry($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Comment[] $comments
  */
 class Post extends Model
 {
@@ -49,5 +50,9 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
 }

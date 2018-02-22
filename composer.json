@@ -15,6 +15,7 @@
         "laravel/passport": "^4.0",
         "laravel/scout": "^3.0",
         "laravel/tinker": "~1.0",
+        "pusher/pusher-php-server": "~3.0",
         "robbiep/cloudconvert-laravel": "2.*"
     },
     "require-dev": {

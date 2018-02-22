@@ -9,9 +9,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    @yield('head')
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+@yield('head')
+<!-- Styles -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @yield('css')
 </head>
 <body>
@@ -74,17 +74,19 @@
             </div>
         </div>
     </nav>
-    </div>
     @yield('content')
-
+</div>
 @yield('modals')
-<!-- Scripts -->
+
+{{--<!-- Scripts -->--}}
 <script src="/js/algoliasearch.min.js"></script>
 <script src="/js/autocomplete.min.js"></script>
-<script src="https://unpkg.com/vue"></script>
-<script src="{{ asset('js/app.js') }}"></script>
+@yield('vue')
+<script src="{{ mix('js/app.js') }}"></script>
+<script>
 
-
+</script>
+<script src="{{ mix('js/myreact.js') }}" type="text/babel"></script>
 @yield('scripts')
 </body>
 </html>

@@ -104,8 +104,8 @@ describe('codegen', () => {
 
   it('generate multi v-else-if with v-else directive', () => {
     assertCodegen(
-        '<div><p v-if="show">hello</p><p v-else-if="hide">world</p><p v-else-if="3">elseif</p><p v-else>bye</p></div>',
-        `with(this){return _c('div',[(show)?_c('p',[_v("hello")]):(hide)?_c('p',[_v("world")]):(3)?_c('p',[_v("elseif")]):_c('p',[_v("bye")])])}`
+      '<div><p v-if="show">hello</p><p v-else-if="hide">world</p><p v-else-if="3">elseif</p><p v-else>bye</p></div>',
+      `with(this){return _c('div',[(show)?_c('p',[_v("hello")]):(hide)?_c('p',[_v("world")]):(3)?_c('p',[_v("elseif")]):_c('p',[_v("bye")])])}`
     )
   })
 
@@ -478,7 +478,7 @@ describe('codegen', () => {
     // have "inline-template'"
     assertCodegen(
       '<my-component inline-template><p><span>hello world</span></p></my-component>',
-      `with(this){return _c('my-component',{inlineTemplate:{render:function(){with(this){return _m(0,false,false)}},staticRenderFns:[function(){with(this){return _c('p',[_c('span',[_v("hello world")])])}}]}})}`
+      `with(this){return _c('my-component',{inlineTemplate:{render:function(){with(this){return _m(0)}},staticRenderFns:[function(){with(this){return _c('p',[_c('span',[_v("hello world")])])}}]}})}`
     )
     // "have inline-template attrs, but not having exactly one child element
     assertCodegen(
@@ -498,7 +498,7 @@ describe('codegen', () => {
   it('generate static trees inside v-for', () => {
     assertCodegen(
       `<div><div v-for="i in 10"><p><span></span></p></div></div>`,
-      `with(this){return _c('div',_l((10),function(i){return _c('div',[_m(0,true,false)])}))}`,
+      `with(this){return _c('div',_l((10),function(i){return _c('div',[_m(0,true)])}))}`,
       [`with(this){return _c('p',[_c('span')])}`]
     )
   })
