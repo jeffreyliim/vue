@@ -21,7 +21,11 @@ require('../../../node_modules/selectize/dist/js/selectize');
 
 require('../../../node_modules/dropzone/dist/dropzone');
 
-require('../../../bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min');
+// require('../../../bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min');
+iziToast = require('../../../node_modules/izitoast/dist/js/iziToast.min');
+
+FlipClock = require('../../../node_modules/flipclock/compiled/flipclock.min');
+
 
 require('../../../resources/assets/js/myvue');
 

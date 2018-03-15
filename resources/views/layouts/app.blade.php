@@ -19,7 +19,6 @@
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
             <div class="navbar-header">
-
                 <!-- Collapsed Hamburger -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#app-navbar-collapse" aria-expanded="false">
@@ -83,9 +82,6 @@
 <script src="/js/autocomplete.min.js"></script>
 @yield('vue')
 <script src="{{ mix('js/app.js') }}"></script>
-<script>
-
-</script>
 <script src="{{ mix('js/myreact.js') }}" type="text/babel"></script>
 @yield('scripts')
 </body>

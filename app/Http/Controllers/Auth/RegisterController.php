@@ -44,7 +44,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -59,7 +59,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \App\User
      */
     protected function create(array $data)
@@ -71,12 +71,19 @@ class RegisterController extends Controller
         ]);
     }
 
+    protected function createRole($user)
+    {
+        return $user->role()->create(['isAdmin' => 0]);
+    }
+
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
-        //push this event so it auto refreshes the number of user without reloading
+
+        $this->createRole($user);
+        //push this event to pusher so it auto refreshes the number of user without reloading (laravel echo)
         event(new \App\Events\UsersWasChanged(\App\User::all()));
         $this->guard()->login($user);
 

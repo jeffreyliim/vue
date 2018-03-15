@@ -105,7 +105,7 @@ return [
     */
 
     'redis' => [
-
+        'cluster' => false,
         'client' => 'predis',
 
         'default' => [

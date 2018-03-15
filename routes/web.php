@@ -12,29 +12,40 @@
 */
 
 Route::get('/', function () {
+    Redis::incr('laravel:pageview');
     return view('welcome');
+
+//    return app()->make('redis');
 });
+Route::get('redis', '\App\Http\Controllers\RedisController@redis');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', PostsController::class);
 
-Route::group(['middleware' => 'auth'], function () {
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('checkAdmin', function () {
+        return Auth::user()->isAdmin();
+    });
+
+    Route::resource('quiz.question', QuizController::class);
     /*
      * this route is used as GET just for testing but the event should be fired in a POST request
      * in order for the data to be pushed to pusher, which laravel echo takes the data
      * and updates it on the front end in real time.
      * */
-    Route::get('post-user',function(){
+    Route::get('post-user', function () {
         event(new \App\Events\UsersWasChanged(\App\User::all()));
     });
-    Route::get('user',function(){
+    Route::get('user', function () {
         return \App\User::all();
     });
 
-    Route::resource('posts.comments',CommentsController::class);
+    Route::post('mail', 'EmailController@send')->name('mail.send');
+
+    Route::resource('posts.comments', CommentsController::class);
 
     Route::get('posts/create/search', 'PostsController@search')->name('posts.search');
 

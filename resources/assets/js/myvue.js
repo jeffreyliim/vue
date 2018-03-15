@@ -175,12 +175,11 @@ Vue.component('test-vue', {
 );
 
 Vue.component('users', {
-    props: ['u'],
 
     data(){
         return {
             users: '',
-            userID: this.u.id,
+
             showButton: false,
         }
     },
@@ -203,10 +202,10 @@ Vue.component('users', {
              *
              *  this helps to change the data on the front-end in real time without the need of refreshing
              *  *** not the best way ***
-             *  best way is to use laravel broadcast
+             *  best way is to use laravel broadcast with pusher
              *
              * */
-            // setTimeout(this.getUserData, 1);
+            // setTimeout(this.getInitialUserData, 1);
 
         },
 
@@ -228,52 +227,14 @@ Vue.component('users', {
                 });
         },
         showAlert(){
-            $.notify({
-                // options
-                icon: 'glyphicon glyphicon-warning-sign',
-                title: 'Bootstrap notify',
-                // this.users.slice(-1) gets the latest item in the users array
-                message: this.users.slice(-1)[0].name + ' has joined the chatroom',
-                url: 'https://github.com/mouse0270/bootstrap-notify',
-                target: '_blank'
-            },{
-                // settings
-                element: 'body',
-                position: null,
-                type: "info",
-                allow_dismiss: true,
-                newest_on_top: false,
-                showProgressbar: false,
-                placement: {
-                    from: "top",
-                    align: "right"
-                },
-                offset: 20,
-                spacing: 10,
-                z_index: 1031,
-                delay: 10000,
-                timer: 1000,
-                url_target: '_blank',
-                mouse_over: null,
-                animate: {
-                    enter: 'animated fadeInDown',
-                    exit: 'animated fadeOutUp'
-                },
-                onShow: null,
-                onShown: null,
-                onClose: null,
-                onClosed: null,
-                icon_type: 'class',
-                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                '<span data-notify="icon"></span> ' +
-                '<span data-notify="title">{1}</span> ' +
-                '<span data-notify="message">{2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                '</div>' +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                '</div>'
+            /*
+             * http://izitoast.marcelodolce.com/
+             * */
+
+            iziToast.success({
+                title: this.users.slice(-1)[0].name,
+                message: ' has joined the chatroom',
+                position: 'topRight'
             });
 
         }
@@ -283,9 +244,169 @@ Vue.component('users', {
 <div>
          <p v-for="user in users">{{ user.name }}</p>
          <button type="button" v-show="showButton" class="btn btn-success">Loading... <i class="fa fa-refresh fa-spin"></i></button>
+         <button type="button" class="btn btn-info" @click="showAlert">Show izitoast alert</button>
         </div>
    `
 
+});
+
+class questionData {
+    constructor(data) {
+        return data;
+    }
+}
+
+
+Vue.component('quiz', {
+    props: ['questions_answers', 'quiz_'],
+
+    data(){
+        return {
+            isDisabled1: false,
+            isDisabled2: false,
+            isDisabled3: false,
+            isDisabled4: false,
+            questions: new questionData(this.questions_answers),
+            quiz: this.quiz_,
+            screenLoader: false,
+            qIndex: 0,
+            baseURL: 'localhost',
+            securityScheme: 'http://',
+            userAccessToken: '',
+            config: {
+                grant_type: 'password',
+                client_id: 1,
+                client_secret: 'jHnXBdlUbWB6CnVwijqL8A4YnAjkHPVQAxY9RUsj',
+                username: 'jlportfolio28858@gmail.com',
+                password: '288588'
+            },
+            selectedAnswer: '',
+        }
+    },
+
+    created(){
+        axios.post(this.securityScheme + this.baseURL + '/api/oauth/token', this.config)
+            .then(response => {
+                let USER_TOKEN = response.data.access_token;
+                let TOKEN_TYPE = response.data.token_type; //bearer
+                this.userAccessToken = {
+                    headers: {
+                        authorization: TOKEN_TYPE + ' ' + USER_TOKEN,
+                    }
+                };
+                console.log(this.userAccessToken);
+
+            }).catch(error => {
+            console.log(error);
+        });
+
+    },
+
+    mounted(){
+        this.createTimer();
+    },
+
+    methods: {
+        createTimer(){
+            let time = 10;
+            let clock = $('.your-clock').FlipClock(time, {
+                countdown: true,
+                clockFace: 'MinuteCounter',
+                callbacks: {
+                    stop: function () {
+                        //submit the answer
+                        let request = {
+                            answer_id: this.selectedAnswer
+                        };
+                        console.log(this.selectedAnswer);
+
+                        axios.post(`/api/quiz/${this.quiz.id}/questions/${this.qIndex + 1}/attempt`, request, this.userAccessToken)
+                            .then(response => {
+                                console.log(response.data.data[0]);
+                            }).catch(error => {
+                            console.log('question has been attempted');
+                        })
+                        // clock.setTime(time + 2);
+                        // clock.start();
+                    }
+                }
+            });
+        },
+        answered1(answer){
+            this.isDisabled2 = true;
+            this.isDisabled3 = true;
+            this.isDisabled4 = true;
+            //answer == 1
+            this.selectedAnswer = this.questions[this.qIndex].answers[0].id;
+        },
+        answered2(answer){
+            this.isDisabled1 = true;
+            this.isDisabled3 = true;
+            this.isDisabled4 = true;
+            //answer == 2
+            this.selectedAnswer = this.questions[this.qIndex].answers[0].id;
+        },
+        answered3(answer){
+            this.isDisabled1 = true;
+            this.isDisabled2 = true;
+            this.isDisabled4 = true;
+            //answer == 3
+            this.selectedAnswer = this.questions[this.qIndex].answers[0].id;
+        },
+        answered4(answer){
+            this.isDisabled1 = true;
+            this.isDisabled2 = true;
+            this.isDisabled3 = true;
+            //answer == 4
+            this.selectedAnswer = this.questions[this.qIndex].answers[0].id;
+        },
+
+
+    },
+
+
+    template: `
+<div>
+        
+        <div class="col-sm-12 question-container">
+            <div class="card card-custom">
+                <div class="card-header">
+                 <div class="col-sm-1">
+                    <p>Q{{ qIndex + 1 }}) </p>
+                 </div>
+                 <p> {{ this.questions[qIndex].name}}</p>
+</div>
+                <div class="card-body">
+                    <div class="form-group" v-for="(answer, key) in questions[qIndex].answers">
+                        <div class="col-sm-1">
+                            <p>{{ key + 1 }}) </p>
+                        </div>
+                        <p>{{ answer.name}}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-sm-6 answer-container" v-show="this.questions[qIndex].answers[0]">
+            <button type="button" :disabled="isDisabled1" @click="answered1(1)" class="btn btn-primary btn-xl">1) {{ this.questions[qIndex].answers[0] ? this.questions[qIndex].answers[0].name : ''  }}</button>
+        </div>
+    
+    
+        <div class="col-sm-6 answer-container" v-show="this.questions[qIndex].answers[1]">
+            <button type="button" :disabled="isDisabled2" @click="answered2(2)" class="btn btn-primary btn-xl">2) {{ this.questions[qIndex].answers[1] ? this.questions[qIndex].answers[1].name : '' }}</button>
+        </div>
+        
+        <div class="col-sm-6 answer-container" v-show="this.questions[qIndex].answers[2]">
+            <button type="button" :disabled="isDisabled3" @click="answered3(3)" class="btn btn-primary btn-xl">3) {{ this.questions[qIndex].answers[2] ? this.questions[qIndex].answers[2].name : ''}}</button>
+        </div>
+        
+        <div class="col-sm-6 answer-container" v-show="this.questions[qIndex].answers[3]">
+            <button type="button" :disabled="isDisabled4" @click="answered4(4)" class="btn btn-primary btn-xl">4) {{ this.questions[qIndex].answers[3] ? this.questions[qIndex].answers[3].name : '' }}</button>
+        </div>
+      </div>
+      
+   `
 });
 
 const app = new Vue({

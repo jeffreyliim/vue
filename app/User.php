@@ -30,6 +30,11 @@ use Laravel\Scout\Searchable;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
+ * @property-read \App\Role $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $attempted_answers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Question[] $attempted_questions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Quiz[] $attempted_quizzes
+ * @property-read \App\Role $role
  */
 class User extends Authenticatable
 {
@@ -41,7 +46,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'isAdmin'
     ];
 
     /**
@@ -58,5 +63,31 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function role()
+    {
+        return $this->hasOne(Role::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role()->first()->isAdmin;
+    }
+
+    public function attempted_quizzes()
+    {
+        return $this->belongsToMany(Quiz::class, 'users_quizzes_questions_answers', 'user_id', 'quiz_id');
+    }
+
+    public function attempted_questions()
+    {
+        return $this->belongsToMany(Question::class, 'users_quizzes_questions_answers', 'user_id', 'question_id')
+            ->withPivot('quiz_id');
+    }
+
+    public function attempted_answers()
+    {
+        return $this->belongsToMany(Answer::class, 'users_quizzes_questions_answers', 'user_id', 'answer_id')
+            ->withPivot('quiz_id', 'question_id');
+    }
 
 }

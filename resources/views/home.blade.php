@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div id="root"></div>
-                <users :u="{{ Auth::user() }}"></users>
+                <users></users>
                 <passport-clients></passport-clients>
                 <passport-authorized-clients></passport-authorized-clients>
                 <passport-personal-access-tokens></passport-personal-access-tokens>
@@ -49,6 +49,10 @@
                 </div>
                 <axios></axios>
                 <issues></issues>
+                <form action="{{ route('mail.send') }}" method="post">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn btn-success">Send Mail Message</button>
+                </form>
             </div>
         </div>
     </div>
