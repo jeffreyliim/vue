@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-Vue = require('vue');
+window.Vue = require('vue');
 
 
 /**
@@ -29,17 +29,24 @@ FlipClock = require('../../../node_modules/flipclock/compiled/flipclock.min');
 
 require('../../../resources/assets/js/myvue');
 
-
+require('../../../node_modules/amcharts3/amcharts/amcharts');
+require('../../../node_modules/amcharts3/amcharts/serial');
+require('../../../node_modules/amcharts3/amcharts/plugins/export/export');
+require('../../../node_modules/amcharts3/amcharts/themes/light');
 
 /*
-* We will import the react source and the react dom here
-* and your react code will be stored in the resources/assets/js/myreact.jsx
-* file. All imports are to be done here.
-* */
+ * We will import the react source and the react dom here
+ * and your react code will be stored in the resources/assets/js/myreact.jsx
+ * file. All imports are to be done here.
+ * */
 
-React = require('react');
+window.React = require('react');
 
-ReactDOM = require('react-dom');
+window.ReactDOM = require('react-dom');
+
+AmCharts = require("@amcharts/amcharts3-react");
 
 require('babel-standalone');
+
+
 

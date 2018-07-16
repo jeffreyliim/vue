@@ -12,7 +12,6 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div id="root"></div>
                 <users></users>
                 <passport-clients></passport-clients>
                 <passport-authorized-clients></passport-authorized-clients>

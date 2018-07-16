@@ -13,16 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware'=>'auth:api'],function(){
+Route::group(['middleware' => 'auth:api'], function () {
+
+    Route::resource('posts', '\App\Http\Controllers\api\PostsController');
+
     Route::resource('quiz', '\App\Http\Controllers\api\QuizController');
     Route::resource('quiz.questions', '\App\Http\Controllers\api\QuestionController');
     Route::resource('quiz.questions.answers', '\App\Http\Controllers\api\AnswerController');
 
-    Route::post('quiz/{quiz}/questions/{question}/attempt','\App\Http\Controllers\api\QuestionController@attempt')
-    ->name('quiz.questions.attempt');
+    Route::post('quiz/{quiz}/questions/{question}/attempt', '\App\Http\Controllers\api\QuestionController@attempt')
+        ->name('quiz.questions.attempt');
 
 });

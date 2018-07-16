@@ -80,8 +80,8 @@
 {{--<!-- Scripts -->--}}
 <script src="/js/algoliasearch.min.js"></script>
 <script src="/js/autocomplete.min.js"></script>
-@yield('vue')
 <script src="{{ mix('js/app.js') }}"></script>
+@yield('vue')
 <script src="{{ mix('js/myreact.js') }}" type="text/babel"></script>
 @yield('scripts')
 </body>

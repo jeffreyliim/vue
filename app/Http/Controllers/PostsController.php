@@ -59,7 +59,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        return \Auth::user()->posts()->findOrFail($id)->load('user');
+        return Post::find($id)->load('user');
     }
 
     /**

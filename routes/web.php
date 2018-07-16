@@ -10,19 +10,34 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    Redis::incr('laravel:pageview');
-    return view('welcome');
-
-//    return app()->make('redis');
-});
-Route::get('redis', '\App\Http\Controllers\RedisController@redis');
+use Illuminate\Support\Facades\Redis;
 
 Auth::routes();
 
+Route::get('/react/logout', function () {
+    Auth::logout();
+    return redirect()->to('/react/login');
+});
+
+Route::get('test', function () {
+    return \App\Quiz::all();
+});
+Route::get('/', function () {
+    Redis::incr('laravel:pageview');
+    return view('welcome');
+//    return app()->make('redis');
+});
+
+Route::get('user', function (Request $request) {
+    return $request->user();
+});
+
+Route::get('redis', '\App\Http\Controllers\RedisController@redis');
+
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts', PostsController::class);
+
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -51,3 +66,19 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('posts/file', 'PostsController@fileUpload')->name('posts.file.upload');
 });
+
+
+
+
+
+/* * * * * * * * * * * * * * * * REACT ROUTES * * * * * * * * * * * * * * * * * * * *
+ * this route allows the react dom to render its own routes instead of listening
+ * to laravel's web routes
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+Route::get('/react/{path?}', function () {
+    return view('react.create');
+})->where('path', '.*');
+
+Route::resource('react', ReactController::class);
+

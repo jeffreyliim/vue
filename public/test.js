@@ -1725,7 +1725,7 @@ webpackJsonp([5], {
             return e("form", [e("card", [e("div", {
                 attrs: {slot: "header"},
                 slot: "header"
-            }, [e("h4", {staticClass: "card-title"}, [t._v("\n        Login Form\n      ")])]), t._v(" "), e("div", [e("fg-input", {
+            }, [e("h4", {staticClass: "card-title"}, [t._v("\n        Register Form\n      ")])]), t._v(" "), e("div", [e("fg-input", {
                 directives: [{
                     name: "validate",
                     rawName: "v-validate",
@@ -2527,7 +2527,7 @@ webpackJsonp([5], {
                         }), t._v(" "), e("sidebar-item", {
                             attrs: {
                                 link: {
-                                    name: "Login Page",
+                                    name: "Register Page",
                                     path: "/login"
                                 }
                             }
@@ -5082,7 +5082,7 @@ webpackJsonp([5], {
             }, [e("a", {staticClass: "nav-link"}, [e("i", {staticClass: "nc-icon nc-badge"}), t._v(" Register\n                ")])]), t._v(" "), e("router-link", {
                 staticClass: "nav-item",
                 attrs: {to: "/login", tag: "li"}
-            }, [e("a", {staticClass: "nav-link"}, [e("i", {staticClass: "nc-icon nc-mobile"}), t._v(" Login\n                ")])]), t._v(" "), e("router-link", {
+            }, [e("a", {staticClass: "nav-link"}, [e("i", {staticClass: "nc-icon nc-mobile"}), t._v(" Register\n                ")])]), t._v(" "), e("router-link", {
                 staticClass: "nav-item",
                 attrs: {to: "/lock", tag: "li"}
             }, [e("a", {staticClass: "nav-link"}, [e("i", {staticClass: "nc-icon nc-key-25"}), t._v(" Lock\n                ")])])], 1)])])], 1)]), t._v(" "), e("div", {

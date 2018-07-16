@@ -1,7 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/quiz.css": "/css/quiz.css",
-    "/css/app.css": "/css/app.css",
-    "/js/myreact.js": "/js/myreact.js",
-    "/js/chart.js": "/js/chart.js"
+    "/js/app.js": "/js/app.js?id=8b445273783dae173349",
+    "/css/quiz.css": "/css/quiz.css?id=cbbc3418517b1ae3ea82",
+    "/css/app.css": "/css/app.css?id=4e96e5ec5e7a2c308906",
+    "/css/react.css": "/css/react.css?id=0c6bf46550dff96ecf80",
+    "/js/react.js": "/js/react.js?id=421ce0a9d6c467b34955",
+    "/js/myreact.js": "/js/myreact.js?id=a9897b608417f8c90603",
+    "/js/chart.js": "/js/chart.js?id=4b6aaa0b6df2f961dd01"
 }

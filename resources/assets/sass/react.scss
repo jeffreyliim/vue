@@ -1,0 +1,27 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,600");
+// Variables
+@import "variables";
+// Bootstrap
+//@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../../node_modules/mdbootstrap/css/bootstrap";
+//@import "../../../node_modules/mdbootstrap/css/mdb";
+@import "../../../bower_components/mdbootstrap4/compiled.min.css";
+@import "../../../node_modules/mdbootstrap/scss/custom";
+// font awesome
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+@import "~selectize/dist/css/selectize.bootstrap3";
+@import "~selectize/dist/css/selectize.default";
+@import "~dropzone/dist/dropzone";
+@import "~animate.css";
+
+@import "../../../node_modules/izitoast/dist/css/iziToast.min.css";
+@import "~flipclock/compiled/flipclock";
+
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+//@import "~bulma";
